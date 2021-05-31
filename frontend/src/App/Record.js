@@ -6,11 +6,6 @@ import Metrics from "./components/Metrics";
 import hark from "hark";
 import Wave from "./components/Wave";
 
-// import microphoneSVG from './assets/microphone.svg'
-import spacebarSVG from "./assets/space.svg";
-import PSVG from "./assets/P.svg";
-import rightSVG from "./assets/right.svg";
-
 import { postAudio, getPrompt, getUser, createUser, getAudioLen } from "./api";
 import { getUUID, getName } from "./api/localstorage";
 
@@ -30,7 +25,11 @@ class Record extends Component {
       totalTime: 0,
       totalCharLen: 0,
       audioLen: 0,
-      showPopup: true
+      showPopup: false,
+      isRecording: false,
+      needsConfirmation: false,
+      replaceRecording: false,
+      autoReview: true
     };
 
     this.uuid = getUUID();
@@ -49,73 +48,107 @@ class Record extends Component {
   render() {
     return (
       <div id="PageRecord">
-        <h1>Mimic Recording Studio</h1>
-        <TopContainer
-          userName={this.name}
-          route={this.props.history.push}
-          show={this.state.showPopup}
-          dismiss={this.dismissPopup}
-        />
-        <Metrics
-          totalTime={this.state.totalTime}
-          totalCharLen={this.state.totalCharLen}
-          promptNum={this.state.promptNum}
-          totalPrompt={this.state.totalPrompt}
-        />
-        <PhraseBox
-          prompt={this.state.prompt}
-          promptNum={this.state.promptNum}
-          audioLen={this.state.audioLen}
-          totalCharLen={this.state.totalCharLen}
-          totalTime={this.state.totalTime}
-        />
-        <div className="wave-container" id="container">
-          {this.state.displayWav ? this.renderWave() : this.renderVisualizer()}
-          <Recorder
-            command={this.state.shouldRecord ? "start" : "stop"}
-            onStart={() => this.shoulddisplayWav(false)}
-            onStop={this.processBlob}
-            gotStream={this.silenceDetection}
+        <div id="recorder">
+          <h1 className="sr-only">Mimic Recording Studio</h1>
+          <TopContainer
+            userName={this.name}
+            route={this.props.history.push}
+            show={this.state.showPopup}
+            dismiss={this.dismissPopup}
           />
+          <Metrics
+            totalTime={this.state.totalTime}
+            totalCharLen={this.state.totalCharLen}
+            promptNum={this.state.promptNum}
+            totalPrompt={this.state.totalPrompt}
+          />
+          <PhraseBox
+            prompt={this.state.prompt}
+            promptNum={this.state.promptNum}
+            audioLen={this.state.audioLen}
+            totalCharLen={this.state.totalCharLen}
+            totalTime={this.state.totalTime}
+          />
+          <div className="wave-container" id="container">
+            {this.state.displayWav ? this.renderWave() : this.renderVisualizer()}
+            <Recorder
+              command={this.state.shouldRecord ? "start" : "stop"}
+              onStart={() => this.shoulddisplayWav(false)}
+              onStop={this.processBlob}
+              gotStream={this.silenceDetection}
+            />
+          </div>
         </div>
-        <div className="indicator-container">
-          {this.state.shouldRecord
-            ? "Read Now [Esc] to cancel"
-            : "[Spacebar] to Start Recording [R] to review [->] for next"}
-        </div>
-        <div id="controls">
-          <a
-            id="btn_Play"
-            className={`btn btn-play ${
-              this.state.shouldRecord
-                ? "btn-disabled"
-                : this.state.blob === undefined
-                ? "btn-disabled"
-                : this.state.play
-                ? "btn-disabled"
-                : null
-            } `}
-            onClick={this.state.shouldRecord ? () => null : this.state.play ? () => null : this.playWav}
-          >
-            <i className="fas fa-play ibutton" />
-            Review
-          </a>
-          <a
-            id="btn_Next"
-            className={`btn-next ${
-              this.state.shouldRecord
-                ? "btn-disabled"
-                : this.state.blob === undefined
-                ? "btn-disabled"
-                : this.state.play
-                ? "btn-disabled"
-                : null
-            }`}
-            onClick={this.state.shouldRecord ? () => null : this.state.play ? () => null : this.onNext}
-          >
-            <i className="fas fa-forward ibutton-next" />
-            Next
-          </a>
+        <div id="footer">
+          <div className="indicator-container">
+            {this.state.shouldRecord ? '⇨ RECORDING IN PROGRESS ⇦' : '— PRESS RECORD TO START —'}
+          </div>
+          <div id="controls">
+            <button id="btn_Record" className={`btn btn-record ${
+                !this.state.isRecording
+                  ? this.state.needsConfirmation
+                    ? this.state.replaceRecording
+                      ? 'confirm' : 'redo'
+                    : 'start'
+                  : 'stop'
+                }`} onClick={!this.state.isRecording ? this.startRecording : this.stopRecording}>
+              <i className={`fas ibutton-record ${
+                !this.state.isRecording
+                  ? this.state.needsConfirmation
+                    ? this.state.replaceRecording
+                      ? 'fa-question-circle' : 'fa-redo-alt'
+                    : 'fa-microphone'
+                  : 'fa-stop-circle'
+                }`} />
+              {!this.state.isRecording
+                ? this.state.needsConfirmation
+                  ? this.state.replaceRecording
+                    ? 'Confirm' : 'Re-Record'
+                  : 'Record'
+                : 'Stop'
+              }
+            </button>
+            <button
+              id="btn_Play"
+              disabled={this.state.shouldRecord || this.state.blob === undefined || this.state.play}
+              className={`btn btn-play ${
+                this.state.shouldRecord
+                  ? "btn-disabled"
+                  : this.state.blob === undefined
+                  ? "btn-disabled"
+                  : this.state.play
+                  ? "btn-disabled"
+                  : ''
+              } `}
+              onClick={this.state.shouldRecord ? () => null : this.state.play ? () => null : this.playWav}
+            >
+              <i className="fas fa-play ibutton" />
+              Review
+            </button>
+            <button
+              id="btn_Next"
+              disabled={this.state.shouldRecord || this.state.blob === undefined || this.state.play}
+              className={`btn-next ${
+                this.state.shouldRecord
+                  ? "btn-disabled"
+                  : this.state.blob === undefined
+                  ? "btn-disabled"
+                  : this.state.play
+                  ? "btn-disabled"
+                  : ''
+              }`}
+              onClick={this.state.shouldRecord ? () => null : this.state.play ? () => null : this.onNext}
+            >
+              <i className="fas fa-forward ibutton-next" />
+              Next
+            </button>
+          </div>
+          <div id="auto-review">
+            <input type="checkbox" checked={this.state.autoReview} id="auto-review-input" onChange={this.handleAutoReview} /> &nbsp;
+            <label htmlFor="auto-review-input">
+              Auto Review Recordings
+            </label>
+          </div>
         </div>
       </div>
     );
@@ -175,7 +208,7 @@ class Record extends Component {
   renderWave = () => (
     <Wave
       className="wavedisplay"
-      waveColor="#FD9E66"
+      waveColor="#88dcfe"
       blob={this.state.blob}
       play={this.state.play}
       onFinish={this.stopWav}
@@ -186,8 +219,8 @@ class Record extends Component {
     <Visualizer
       className="wavedisplay"
       record={this.state.shouldRecord}
-      backgroundColor={"#222222"}
-      strokeColor={"#FD9E66"}
+      backgroundColor={"#1b1e28"}
+      strokeColor={"#88dcfe"}
     />
   );
 
@@ -203,6 +236,12 @@ class Record extends Component {
       blob: blob
     });
     this.shoulddisplayWav(true);
+
+    if (this.state.autoReview) {
+      clearTimeout(window.autoPlay);
+
+      window.autoPlay = setTimeout(this.playWav, 3000);
+    }
   };
 
   shoulddisplayWav = bool => this.setState({ displayWav: bool });
@@ -211,51 +250,71 @@ class Record extends Component {
 
   stopWav = () => this.setState({ play: false });
 
-  handleKeyDown = event => {
-    // space bar code
-    if (event.keyCode === 32) {
-      if (!this.state.shouldRecord) {
-        event.preventDefault();
-        this.recordHandler();
-      }
+  startRecording = () => {
+    // Check if we are already recording
+    if (this.state.isRecording) {
+      this.stopRecording();
+      return;
     }
 
-    // esc key code
-    if (event.keyCode === 27) {
-      event.preventDefault();
+    // Check if we have not started a recording already
+    if (!this.state.shouldRecord && !this.state.needsConfirmation && !this.state.replaceRecording) {
+      this.recordHandler();
+      return;
+    }
 
-      // resets all states
+    // If we have already started a recording, ask user to confirm replacing recording
+    if (!this.state.shouldRecord && this.state.needsConfirmation && !this.state.replaceRecording) {
       this.setState({
-        shouldRecord: false,
-        displayWav: false,
-        blob: undefined,
-        promptNum: 0,
-        totalTime: 0,
-        totalCharLen: 0,
-        audioLen: 0,
-        play: false
+        needsConfirmation: true,
+        replaceRecording: true
       });
     }
 
-    // play wav
-    if (event.keyCode === 82) {
-      this.playWav();
+    // Replace Recording
+    if (!this.state.shouldRecord && this.state.needsConfirmation && this.state.replaceRecording) {
+      this.recordHandler();
+      return;
     }
+  };
 
-    // next prompt
-    if (event.keyCode === 39) {
-        if (!this.state.play) {
-          this.onNext();
-        }
-     }
+  stopRecording = () => {
+    if (this.state.needsConfirmation) {
+      this.setState({
+        shouldRecord: false,
+        play: false,
+        isRecording: false,
+        needsConfirmation: true,
+        replaceRecording: false
+      });
+    } else {
+      this.setState({
+        shouldRecord: false,
+        play: false,
+        isRecording: false,
+        needsConfirmation: false,
+        replaceRecording: false
+      });
+    }
+  };
+
+  handleKeyDown = event => {
+    // esc key code
+    if (event.keyCode === 27) {
+      event.preventDefault();
+      this.stopRecording();
+    }
   };
 
   recordHandler = () => {
     setTimeout(() => {
       this.setState((state, props) => {
         return {
+          isRecording: true,
           shouldRecord: true,
-          play: false
+          play: false,
+          needsConfirmation: true,
+          replaceRecording: false
         };
       });
     }, 500);
@@ -274,6 +333,20 @@ class Record extends Component {
               blob: undefined,
               audioLen: 0
             });
+
+            this.setState({
+              shouldRecord: false,
+              displayWav: false,
+              blob: undefined,
+              promptNum: 0,
+              totalTime: 0,
+              totalCharLen: 0,
+              audioLen: 0,
+              play: false,
+              isRecording: false,
+              needsConfirmation: false,
+              replaceRecording: false
+            });
           } else {
             alert("There was an error in saving that audio");
           }
@@ -290,11 +363,15 @@ class Record extends Component {
     const speechEvents = hark(stream, options);
 
     speechEvents.on("stopped_speaking", () => {
-      this.setState({
-        shouldRecord: false
-      });
+      this.stopRecording();
     });
   };
+
+  handleAutoReview = (event) => {
+    this.setState({
+      autoReview: event.target.checked
+    });
+  }
 }
 
 class TopContainer extends Component {
@@ -306,25 +383,6 @@ class TopContainer extends Component {
     return (
       <div className="top-container">
         <div className="top-container-info">
-          <div className="instructions2">
-            <i className="fas fa-info-circle" />
-            <h2>HINTS</h2>
-            <ul className="hints">
-              <li>
-                <img src={spacebarSVG} className="key-icon" alt="space" /> will
-                start recording
-              </li>
-              <li>Recording will auto-stop after you speak</li>
-              <li>
-                <img src={PSVG} className="key-icon" alt="p" /> will play
-                recorded audio
-              </li>
-              <li>
-                <img src={rightSVG} className="key-icon" alt="->" /> will go to
-                next prompt
-              </li>
-            </ul>
-          </div>
           <div className="session-info">
             <div className="top-info">
               <div>
@@ -343,14 +401,16 @@ class TopContainer extends Component {
               . If you accidentally deviate from the script or are unsure,
               please record the prompt again.
             </p>
+            <p>
+              <button className="btn info-btn" onClick={this.handleClick}>
+                Tutorial
+              </button>
+              <button className="btn info-btn" onClick={this.props.dismiss}>
+                Continue
+              </button>
+            </p>
           </div>
         </div>
-        <button className="btn info-btn" onClick={this.handleClick}>
-          Tutorial
-        </button>
-        <button className="btn info-btn" onClick={this.props.dismiss}>
-          Continue
-        </button>
       </div>
     );
   };

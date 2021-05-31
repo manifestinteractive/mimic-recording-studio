@@ -6,12 +6,17 @@ class Wave extends Component {
     componentDidMount() {
         document.addEventListener("keydown", this.handleKeyDown, false);
 
-        const { waveColor, blob } = this.props;
+        const { progressColor, waveColor, blob } = this.props;
         this.wavesurfer = WaveSurfer.create({
             container: "#waveform",
-            waveColor: waveColor ? waveColor : "#FD9E66"
+            waveColor: '#90a1a9',// waveColor ? waveColor : "#88dcfe",
+            progressColor: '#88dcfe'//progressColor ? progressColor : "#5DE4c7"
         });
-        this.loadWaveForm(blob);
+
+        if (blob) {
+          this.loadWaveForm(blob);
+        }
+
         this.wavesurfer.on("finish", () => {
             this.wavesurfer.pause();
             this.props.onFinish();
@@ -20,10 +25,8 @@ class Wave extends Component {
 
     componentDidUpdate() {
         if (this.props.play) {
-            console.log("play")
             this.wavesurfer.play();
         } else {
-            console.log("pausing")
             this.wavesurfer.pause();
         }
     }
@@ -52,7 +55,8 @@ class Wave extends Component {
 Wave.propTypes = {
     className: PropTypes.string,
     waveColor: PropTypes.string,
-    blob: PropTypes.blob,
+    progressColor: PropTypes.string,
+    blob: PropTypes.object,
     play: PropTypes.bool,
     onFinish: PropTypes.func
 }

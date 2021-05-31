@@ -1,6 +1,6 @@
-/* 
+/*
 This code was modified to work with the lastest React Version.
-Original code can be found here 
+Original code can be found here
 https://github.com/agrasley/react-recorder/blob/master/src/Recorder.js
 
 The MIT License (MIT)
@@ -65,7 +65,7 @@ class Recorder extends React.Component {
 			};
 
 			const onSuccess = stream => {
-                
+
 				this.mediaRecorder = new window.MediaRecorder(stream, mediaOpts || {});
 
 				this.mediaRecorder.ondataavailable = e => {

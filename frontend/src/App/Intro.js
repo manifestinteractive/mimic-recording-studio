@@ -22,7 +22,7 @@ class Intro extends Component {
     return (
       <div className="page-intro">
         <div id="PageIntro">
-          <h2 style={{ color: "#FD9E66" }}>Mimic Recording Studio</h2>
+          <h2 style={{ color: "#27e4bc" }}>Mimic Recording Studio</h2>
           <h1>Help us build the voice(s) of Mycroft!</h1>
           <p>
             Mycroft's open source Mimic technologies are Text-to-Speech engines,
