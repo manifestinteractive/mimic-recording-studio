@@ -13,7 +13,7 @@ if not defined python3_dir (
 	if not exist "c:\Python37" (
 	   echo "Downloading Python37..."
 	   powershell -command "[Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12 ; wget https://www.python.org/ftp/python/3.7.1/python-3.7.1.exe -outfile python-3.7.1.exe"
-	   
+
 	   echo "Installing Python37..."
 	   start "Installing Python3.7.1 ..." /wait python-3.7.1.exe  /quiet InstallAllUsers=1 PrependPath=1 Include_test=0 TargetDir=c:\Python37
 	)
@@ -31,7 +31,7 @@ if not defined nodejs_dir (
 	   powershell -command "[Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12 ; wget https://nodejs.org/dist/v10.13.0/node-v10.13.0-x64.msi -outfile node-v10.13.0-x64.msi"
 	   start "Installing NodeJS..." /wait node-v10.13.0-x64.msi
 	)
-	
+
 	set nodejs_dir=C:\Program Files\nodejs\npm
 )
 

@@ -23,16 +23,16 @@ class Intro extends Component {
       <div className="page-intro">
         <div id="PageIntro">
           <h2 style={{ color: "#27e4bc" }}>Mimic Recording Studio</h2>
-          <h1>Help us build the voice(s) of Mycroft!</h1>
+          <h1>Create a Custom Text to Speech Voice</h1>
           <p>
-            Mycroft's open source Mimic technologies are Text-to-Speech engines,
+            <a href="https://mycroft.ai/" target="_blank" rel="noopener noreferrer">Mycroft's</a> open source Mimic technologies are Text-to-Speech engines,
             which take a piece of written text and convert it into spoken audio.
             The latest generation of this technology uses machine learning
             techniques to create a model, which can speak a specific language,
             sounding like the voice on which it was trained.
           </p>
           <p>
-            The Mimic Recording Studio simplifies the collection of training data from
+            The <a href="https://github.com/MycroftAI/mimic-recording-studio" target="_blank" rel="noopener noreferrer">Mimic Recording Studio</a> simplifies the collection of training data from
             individuals, each of which can be used to produce a distinct voice
             for Mimic.
           </p>
@@ -41,13 +41,13 @@ class Intro extends Component {
             <i className="fas fa-book-open" />
             <h2>guide</h2>
             <p>
-              Mimic II preserves the rhythm, tone and pronunciation from source
+            <a href="https://github.com/MycroftAI/mimic2" target="_blank" rel="noopener noreferrer">Mimic II</a> preserves the rhythm, tone and pronunciation from source
               recordings. As a result, it is important for all recordings to use
               a consistent voice for the personality of the final product.
             </p>
 
             <p>
-              To help with this, adopt the assistant persona for all recordings:
+              <strong>To help with this, adopt the assistant persona for all recordings:</strong>
             </p>
 
             <ul className="persona-desc">
@@ -91,7 +91,8 @@ class Intro extends Component {
               className="btn"
               onClick={this.handleTrainMimicBtn}
             >
-            Record
+              {getName() ? "Let's Go" : "Next"}
+              <i className="fas ibutton-continue fa-arrow-right" />
             </button>
           </div>
         </div>
@@ -102,7 +103,7 @@ class Intro extends Component {
   renderInput = () => {
     return (
       <div>
-        <p>To get started, enter your name and hit the Record button.</p>
+        <p>To get started, enter your name and hit the Next button.</p>
         <input
           type="text"
           id="yourname"
@@ -116,8 +117,8 @@ class Intro extends Component {
   renderWelcomeBackMsg = () => {
     return (
       <div>
-        <p>Welcome back {this.state.name}!</p>
-        <p>Hit Train Mimic to continue recording</p>
+        <p>Welcome back <strong>{this.state.name}</strong> !</p>
+        <p>Ready to Continue Recording?</p>
       </div>
     );
   };
@@ -130,8 +131,8 @@ class Intro extends Component {
     if (this.state.name === undefined) {
       alert("Please input a name before proceeding!");
     } else {
-	  saveName(this.state.name);
-	  this.props.history.push('/record')
+	    saveName(this.state.name);
+	    this.props.history.push('/record')
     }
   };
 }

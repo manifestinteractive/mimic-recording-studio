@@ -18,7 +18,7 @@ class Metrics extends Component {
                 </div>
                 <div className="speech-rate">
                     <h2>SPEECH RATE</h2>
-                    <div>Overall Average: {charPerSec} characters per second</div>
+                    <div>Average: {charPerSec} characters per second</div>
                 </div>
             </div>
         );
@@ -30,10 +30,7 @@ class Metrics extends Component {
         var m = Math.floor((d % 3600) / 60);
         var s = Math.floor((d % 3600) % 60);
 
-        var hDisplay = h > 0 ? h + (h === 1 ? " hour, " : " hours, ") : "";
-        var mDisplay = m > 0 ? m + (m === 1 ? " minute, " : " minutes, ") : "";
-        var sDisplay = s > 0 ? s + (s === 1 ? " second" : " seconds") : "";
-        return hDisplay + mDisplay + sDisplay;
+        return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
     };
 }
 

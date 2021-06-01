@@ -23,14 +23,14 @@ class PhraseBox extends Component {
       ).toFixed(1);
       // allow deviation of 25% of speechRate from average speech rate
       if (this.determinePace(avgSpeechRate, speechRate)) {
-        return <div className="feedback-ball-green">Consistent Pace</div>;
+        return <div className="feedback-ball-green">Good Pace</div>;
       } else if (speechRate < avgSpeechRate) {
         return (
-          <div className="feedback-ball-red">Slower than your average</div>
+          <div className="feedback-ball-red">Too Slow</div>
         );
       } else {
         return (
-          <div className="feedback-ball-red">Faster than your average</div>
+          <div className="feedback-ball-red">Too Fast</div>
         );
       }
     }

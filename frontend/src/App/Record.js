@@ -19,7 +19,7 @@ class Record extends Component {
       displayWav: false,
       blob: undefined,
       play: false,
-      prompt: "*error loading prompt... is the backend running?*",
+      prompt: '',
       language: "",
       promptNum: 0,
       totalTime: 0,
@@ -29,7 +29,8 @@ class Record extends Component {
       isRecording: false,
       needsConfirmation: false,
       replaceRecording: false,
-      autoReview: true
+      autoReview: true,
+      supportedBrowser: false
     };
 
     this.uuid = getUUID();
@@ -39,6 +40,18 @@ class Record extends Component {
   componentDidMount() {
     document.addEventListener("keydown", this.handleKeyDown, false);
     this.requestUserDetails(this.uuid);
+
+    // Check for Supported Browser
+    if (!navigator.getUserMedia || !window.MediaRecorder) {
+      this.setState({
+        prompt: 'Your browser doesn\'t support native microphone recording. For best results, we recommend using Google Chrome or Mozilla Firefox.',
+        totalPrompt: 0
+      })
+    } else {
+      this.setState({
+        supportedBrowser: true
+      })
+    }
   }
 
   componentWillUnmount() {
@@ -47,7 +60,14 @@ class Record extends Component {
 
   render() {
     return (
-      <div id="PageRecord">
+      <div id="PageRecord" className={`wave-container ${
+        !this.state.isRecording
+          ? this.state.needsConfirmation
+            ? this.state.replaceRecording
+              ? 'has-recorded needs-confirmation' : 'has-recorded'
+            : 'is-new'
+          : 'is-recording'
+        }`}>
         <div id="recorder">
           <h1 className="sr-only">Mimic Recording Studio</h1>
           <TopContainer
@@ -75,16 +95,34 @@ class Record extends Component {
               command={this.state.shouldRecord ? "start" : "stop"}
               onStart={() => this.shoulddisplayWav(false)}
               onStop={this.processBlob}
+              onMissingAPIs={this.checkSupport}
               gotStream={this.silenceDetection}
             />
           </div>
         </div>
         <div id="footer">
           <div className="indicator-container">
-            {this.state.shouldRecord ? '⇨ RECORDING IN PROGRESS ⇦' : '— PRESS RECORD TO START —'}
+            {!this.state.isRecording
+                ? this.state.needsConfirmation
+                  ? this.state.replaceRecording
+                    ? 'ARE YOU SURE YOU WANT TO REPLACE RECORDING ?'
+                    : 'PRESS RE-RECORD TO REDO RECORDING'
+                  : 'PRESS RECORD TO START'
+                : '— — RECORDING IN PROGRESS — —'
+            }
           </div>
           <div id="controls">
-            <button id="btn_Record" className={`btn btn-record ${
+            <button id="btn_Record"
+              disabled={!this.state.supportedBrowser}
+              title={
+                !this.state.isRecording
+                  ? this.state.needsConfirmation
+                    ? this.state.replaceRecording
+                      ? 'Confirm Replace Recording' : 'Redo Recording'
+                    : 'Start Recording'
+                  : 'Stop Recording'
+              }
+              className={`btn btn-record ${
                 !this.state.isRecording
                   ? this.state.needsConfirmation
                     ? this.state.replaceRecording
@@ -110,6 +148,7 @@ class Record extends Component {
             </button>
             <button
               id="btn_Play"
+              title="Listen to Recording"
               disabled={this.state.shouldRecord || this.state.blob === undefined || this.state.play}
               className={`btn btn-play ${
                 this.state.shouldRecord
@@ -127,8 +166,9 @@ class Record extends Component {
             </button>
             <button
               id="btn_Next"
+              title="Save Recording and Continue"
               disabled={this.state.shouldRecord || this.state.blob === undefined || this.state.play}
-              className={`btn-next ${
+              className={`btn btn-next ${
                 this.state.shouldRecord
                   ? "btn-disabled"
                   : this.state.blob === undefined
@@ -144,7 +184,14 @@ class Record extends Component {
             </button>
           </div>
           <div id="auto-review">
-            <input type="checkbox" checked={this.state.autoReview} id="auto-review-input" onChange={this.handleAutoReview} /> &nbsp;
+            <input
+              type="checkbox"
+              id="auto-review-input"
+              title="Automatically Play Recordings when Complete?"
+              disabled={!this.state.supportedBrowser}
+              checked={this.state.autoReview}
+              onChange={this.handleAutoReview}
+            /> &nbsp;
             <label htmlFor="auto-review-input">
               Auto Review Recordings
             </label>
@@ -195,11 +242,11 @@ class Record extends Component {
                   this.setState({ userCreated: true });
                   this.requestPrompts(this.uuid);
                 } else {
-                  alert("sorry there is in error creating user");
+                  window.location = '/';
                 }
               });
           } else {
-            alert("sorry there is in error creating user");
+            window.location = '/';
           }
         }
       });
@@ -208,7 +255,8 @@ class Record extends Component {
   renderWave = () => (
     <Wave
       className="wavedisplay"
-      waveColor="#88dcfe"
+      waveColor="rgba(255, 255, 255, 0.15)"
+      progressColor="#88dcfe"
       blob={this.state.blob}
       play={this.state.play}
       onFinish={this.stopWav}
@@ -223,6 +271,18 @@ class Record extends Component {
       strokeColor={"#88dcfe"}
     />
   );
+
+  checkSupport = (media, recorder) => {
+    console.log('media', media)
+    console.log('recorder', recorder)
+
+    if (!media && !recorder) {
+      this.setState({
+        prompt: 'Unsupported Browser',
+        totalPrompt: 1
+      })
+    }
+  };
 
   processBlob = blob => {
     getAudioLen(this.uuid, blob)

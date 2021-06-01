@@ -1,19 +1,19 @@
 version: '3'
 services:
   backend:
-    container_name: mrs-backend
+    container_name: mimic-my-voice-backend
     build:
       context: ./backend/
     ports:
      - "5000:5000"
-    volumes: 
+    volumes:
      - ./backend/:/src
     environment:
     - CORPUS=english_corpus.csv
     - APIPORT=5000
     - WEBWORKERS=1
   frontend:
-    container_name: mrs-frontend
+    container_name: mimic-my-voice-frontend
     build:
       context: ./frontend/
     ports:

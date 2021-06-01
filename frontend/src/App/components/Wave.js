@@ -9,8 +9,8 @@ class Wave extends Component {
         const { progressColor, waveColor, blob } = this.props;
         this.wavesurfer = WaveSurfer.create({
             container: "#waveform",
-            waveColor: '#90a1a9',// waveColor ? waveColor : "#88dcfe",
-            progressColor: '#88dcfe'//progressColor ? progressColor : "#5DE4c7"
+            waveColor: waveColor ? waveColor : 'rgba(255, 255, 255, 0.15)',
+            progressColor: progressColor ? progressColor : '#88dcfe'
         });
 
         if (blob) {

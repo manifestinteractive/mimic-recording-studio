@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import PhraseBox from "./components/PhraseBox";
 import { ReactMic as Visualizer } from "react-mic";
-import spacebarSVG from "./assets/space.svg";
-import PSVG from "./assets/P.svg";
-import rightSVG from "./assets/right.svg";
 
 class Tutorial extends Component {
   render() {
@@ -28,44 +25,59 @@ class Tutorial extends Component {
             <Visualizer
                 className="wavedisplay"
                 record={false}
-                backgroundColor="#222222"
-                strokeColor="#FD9E66"
+                backgroundColor="#1b1e28"
+                strokeColor="#88dcfe"
             />
+            <p>&nbsp;</p>
+
+            <h2>Controls</h2>
             <p>
-                In the middle, you can see the phrase to record. To start the
-                recording press the &nbsp;
-                <img src={spacebarSVG} className="key-icon" alt="space" /> &nbsp;
-                bar. The recording should automatically stop when it detects
-                silence. To replay the recording press the &nbsp;
-                <img src={PSVG} className="key-icon" alt="p" /> &nbsp;
-                key. You may re-record
-                that same phrase as many times as you like. <b>It is essential that the
-                recorded words match the text in the script exactly. </b> If you
-                accidentally deviate from the script or are unsure, please record
-                the prompt again. Once saved you may not be able to go back. Press
-                the &nbsp;
-                <img src={rightSVG} className="key-icon" alt="->" />&nbsp;
-                key to keep the recording and move on to the next phrase.
+              <strong>[ RECORD ]</strong>&nbsp; Starts Recording
+            </p>
+            <p>
+              <strong>[ STOP ]</strong>&nbsp; Stops Recording ( Automatically Stops when silence detected )
+            </p>
+            <p>
+              <strong>[ RE-RECORD ]</strong>&nbsp; Redo Recording
+            </p>
+            <p>
+              <strong>[ CONFIRM ]</strong>&nbsp; Confirm Redo Recording ( Prevents wiping out good takes )
+            </p>
+            <p>
+              <strong>[ REVIEW ]</strong>&nbsp; Listen to Recording
+            </p>
+            <p>
+              <strong>[ NEXT ]</strong>&nbsp; Save Recording and Go to Next Phrase
+            </p>
+
+            <h2>Important</h2>
+            <p>
+                It is essential that the recorded words match the text in the script <strong>exactly</strong>.
+                If you deviate from the script or wish to record a new take, press the RE-RECORD button.&nbsp;
+                <strong>Once saved you will not be able to go back.</strong>
             </p>
           </div>
           <div>
               <h2>Feedback</h2>
               <p>
-              When recording stops, you may notice a feedback indicator appearing in the top right corner of the Recording Box. This indicator will tell you if you are speaking to fast, to slow, or at a good pace.
+                The Feedback Indicator will only start appearing after <strong>100 Recorded Samples</strong>.
+                When recording stops, the feedback indicator will appear below the Control Buttons.
+                This indicator will tell you if you are speaking to fast, to slow, or at a good pace. The indicator is determined using your average speech rate.
               </p>
               <div className="grid-layout">
                 <div className="feedback-ball-green-t">Good Pace</div>
                 <div className="feedback-ball-red-t">Too Slow</div>
                 <div className="feedback-ball-red-t">Too Fast</div>
               </div>
-              <p><b>The indicator is determined using your average speech rate. The indicator will only start appearing after 100 recorded samples.
-              </b>
-            </p>
           </div>
           <div>
-              <button className="btn" onClick={this.handleClick}>Record</button>
+              <button className="btn" onClick={this.handleClick}>
+                Let's Go
+                <i className="fas ibutton-continue fa-arrow-right" />
+              </button>
           </div>
         </div>
+        <div className="clearfix"></div>
       </div>
     );
   }

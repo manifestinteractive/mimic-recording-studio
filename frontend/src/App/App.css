@@ -3,7 +3,13 @@
 * {
   margin: 0;
   padding: 0;
+}
+
+html {
   box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
 }
 
 html, body, #root, .App {
@@ -86,6 +92,16 @@ hr {
 }
 .page-intro {
   margin-bottom: 20px;
+}
+
+.page-intro a {
+  color: white;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.page-intro a:hover {
+  color: #88dcfe;
 }
 
 .topnav {
@@ -291,7 +307,7 @@ hr {
   background-color: #e05da0;;
 }
 
-.btn-disabled {
+.btn-disabled, button:disabled, button[disabled] {
   cursor: initial !important;
   background-color: rgba(255, 255, 255, 0.25) !important;
   color: #1b1e28 !important;
@@ -413,15 +429,17 @@ input::placeholder {
   width: 100%;
   margin: 0;
   text-align: center;
-  margin-top: calc(50vh - 500px);
-  min-height: 400px;
+  min-height: 350px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #phrase {
   background-color: #1b1e28;
-  color: #88dcfe; /* orange */
+  color: #88dcfe;
   font-size: 2.6em;
-  padding: 100px;
+  padding: 0 100px;
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
   position: relative;
@@ -430,51 +448,67 @@ input::placeholder {
 
 .feedback-ball-red {
   background-color: #e05da0;
-  padding: 0px 16px;
+  padding: 0;
   height: 30px;
   border-radius: 5px;
-  position: absolute;
-  top: 10px;
-  right: 0;
+  position: fixed;
+  bottom: 20px;
   font-size: 1rem;
   color: #1c1e29;
   text-transform: uppercase;
   line-height: 30px;
   font-weight: 400;
+  left: calc(50% - 60px);
+  width: 120px;
+  white-space: nowrap;
+  text-align: center;
 }
 
 .feedback-ball-green {
-  background-color: rgb(136 220 254);
-  padding: 0px 16px;
+  background-color: #27e4bc;
+  padding: 0;
   height: 30px;
   border-radius: 5px;
-  position: absolute;
-  top: 10px;
-  right: 0;
+  position: fixed;
+  bottom: 20px;
   font-size: 1rem;
   color: #1c1e29;
   text-transform: uppercase;
   line-height: 30px;
   font-weight: 400;
+  left: calc(50% - 60px);
+  width: 120px;
+  white-space: nowrap;
+  text-align: center;
 }
 
 .feedback-ball-red-t {
-  background-color: rgb(228, 63, 70);
-  padding: 0px 5px 0px 5px;
+  background-color: #e05da0;
+  padding: 0;
   height: 30px;
   border-radius: 5px;
-  font-size: large;
-  color: white;
+  font-size: 1rem;
+  color: #1c1e29;
+  text-transform: uppercase;
+  line-height: 30px;
+  font-weight: 400;
+  white-space: nowrap;
+  width: 120px;
   text-align: center;
 }
 
 .feedback-ball-green-t {
-  background-color: rgb(37, 162, 78);
-  padding: 0px 5px 0px 5px;
+  background-color: #27e4bc;
+  padding: 0;
   height: 30px;
   border-radius: 5px;
-  font-size: large;
-  color: white;
+  font-size: 1rem;
+  color: #1c1e29;
+  text-transform: uppercase;
+  line-height: 30px;
+  font-weight: 400;
+  white-space: nowrap;
+  width: 120px;
   text-align: center;
 }
 
@@ -490,7 +524,7 @@ input::placeholder {
   grid-template-columns: auto auto auto;
   align-items: center;
   justify-items: center;
-  margin: 2em 0 2em 0;
+  margin: 0 0 2em 0;
 }
 
 /* Holds recording widgets */
@@ -502,6 +536,24 @@ input::placeholder {
 .wave-container {
   background-color: #1b1e28;
   width: 100%;
+}
+
+#PageRecord .wavedisplay {
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+#PageRecord.is-new .wavedisplay {
+  opacity: 0;
+}
+#PageRecord.is-recording .wavedisplay {
+  opacity: 1;
+}
+#PageRecord.has-recorded .wavedisplay {
+  opacity: 1;
+}
+#PageRecord.needs-confirmation .wavedisplay {
+  opacity: 1;
 }
 
 #analyser,
@@ -571,6 +623,13 @@ canvas {
   position: relative;
   top: 2px;
 }
+.ibutton-continue {
+  font-size: 1.3em;
+  color: #1b1e28;
+  margin-left: 10px;
+  position: relative;
+  top: 2px;
+}
 
 .ibutton-next {
   font-size: 0.9em;
@@ -582,8 +641,12 @@ canvas {
 .tutorial {
   margin: 20px 0px 40px 0px;
   padding: 40px 50px 40px 50px;
-  background-color: #f1f3f4;
+  background-color: rgba(0, 0, 0, 0.25);
   border-radius: 6px;
+}
+
+.tutorial #phraseBox {
+  background-color: #1b1e28;
 }
 
 .indicator-container {
@@ -602,6 +665,28 @@ label {
   color: #90a1a9;
 }
 
+a.get-help {
+  color: #ffffff;
+  font-weight: 300;
+  text-transform: uppercase;
+  float: right;
+  font-size: 1rem;
+  line-height: 30px;
+  height: 30px;
+  display: inline-block;
+}
+
+a.get-help:hover, a.get-help:focus, a.get-help:active {
+  color: #88dcfe;
+  text-decoration: underline;
+}
+
+.clearfix {
+  display: block;
+  height: 1px;
+  width: 100%;
+}
+
 #recorder {
   min-height: calc(100vh - 300px);
   height: 100%;
@@ -609,4 +694,98 @@ label {
 
 #footer {
   height: 175px;
+}
+
+@media only screen and (min-width: 1200px) {
+  .page {
+    padding: 0;
+  }
+  .topnav {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .topnav {
+    padding-bottom: 0;
+  }
+  .page {
+    margin-top: 0;
+  }
+  .total-hours {
+    flex: unset;
+    width: 100%;
+    margin: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    padding: 20px 20px 0 20px;
+    font-size: 0.8rem;
+    line-height: 1.2rem;
+  }
+
+  .speech-rate {
+    flex: unset;
+    width: 100%;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    padding: 8px 20px 20px 20px;
+    font-size: 0.8rem;
+    line-height: 1.2rem;
+  }
+
+  h2 {
+    padding-bottom: 4px;
+  }
+
+  #phraseBox {
+    min-height: 230px;
+  }
+
+  #phrase {
+    font-size: 1.4em;
+    padding: 0;
+  }
+
+  .btn {
+    padding: 0 1em;
+    height: 32px;
+    line-height: 32px;
+    font-size: 0.8em;
+  }
+
+  .btn-record, .btn-play, .btn-record, .btn-stop, .btn-next {
+    width: unset;
+  }
+
+  .feedback-ball-red, feedback-ball-green {
+    height: 24px;
+    line-height: 24px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 0 8px;
+  }
+
+  .tutorial {
+    margin: 0 0 20px 0;
+    padding: 20px;
+  }
+
+  .tutorial .grid-layout {
+    display: block;
+  }
+
+  .tutorial .grid-layout div {
+    margin: 0 auto;
+    margin-bottom: 8px;
+  }
+
+  #recorder {
+    min-height: calc(100vh - 344px);
+    height: 100%;
+  }
+
+  #footer {
+    height: 175px;
+  }
 }

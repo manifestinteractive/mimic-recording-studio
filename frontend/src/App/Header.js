@@ -10,6 +10,10 @@ class Header extends Component {
         <Link to="/">
           <img className="logo" src={logo} height="24px" alt=""/>
         </Link>
+
+        <Link to="/tutorial" title="Need Help?" className={`get-help ${window.location.pathname !== '/record' ? 'sr-only' : ''}`}>
+          Help
+        </Link>
       </div>
     );
   }
