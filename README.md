@@ -1,7 +1,7 @@
 Mimic Recording Studio
 ---
 
-This fork of [Mycrofts Mimic Recording Studio](https://github.com/MycroftAI/mimic-recording-studio) is built specifically for my personal project [Mimic My Voice](https://github.com/manifestinteractive/mimic-my-voice) and is brought automatically during that projects setup process.
+This fork of [Mycrofts Mimic Recording Studio](https://github.com/MycroftAI/mimic-recording-studio) is built specifically for my personal project [Mimic My Voice](https://github.com/manifestinteractive/mimic-my-voice) and is brought in automatically during that projects setup process.
 
 What's Different
 ===
