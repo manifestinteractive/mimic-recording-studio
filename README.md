@@ -22,3 +22,7 @@ What's Different
 - [X] Fixed JavaScript Error with Recording and Incorrect Blob React Prop-Type
 
 So, you probably do not want THIS version of the Mimic Recording Studio, unless you are a developer working with the [Mimic My Voice](https://github.com/manifestinteractive/mimic-my-voice) project.
+
+## Disclaimer
+
+The trademarks and product names of Mycroft, including the Mycroft mark, are the property of [Mycroft.ai](https://mycroft.ai). Peter Schmalfeldt is not affiliated with Mycroft, nor does Mycroft sponsor or endorse Peter Schmalfeldt's projects or website. The use of the Mycroft trademark on this project does not indicate an endorsement, recommendation, or business relationship between Mycroft and Peter Schmalfeldt.
