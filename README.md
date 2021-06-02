@@ -9,6 +9,9 @@ What's Different
 > Here are the changes I have made in this repository, some of which I would consider to be breaking changes for those used to the original project.
 
 - [X] Refactored to work with [Mimic My Voice](https://github.com/manifestinteractive/mimic-my-voice) Automated Setup Process
+- [X] Removed UUID & Name Requirements from App.  Having different UUID's made it impossible to Backup and Restore Recordings on Different Browsers or Computers
+- [X] Added Visual Error Handling to Recording Process
+- [X] Removed LocalStorage requirements since it was no longer needed
 - [X] Restyle to look more modern and work on smaller screens
 - [X] Improved User Experience with Recording Process
 - [X] Add Confirmation Process when Recording Over current recording ( this drove me crazy )
