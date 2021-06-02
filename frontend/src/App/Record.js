@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import { ReactMic as Visualizer } from "react-mic";
-import Recorder from "./components/Recorder";
-import PhraseBox from "./components/PhraseBox";
-import Metrics from "./components/Metrics";
-import hark from "hark";
-import Wave from "./components/Wave";
+import React, { Component } from 'react';
+import { ReactMic as Visualizer } from 'react-mic';
+import hark from 'hark';
 
-import { postAudio, getPrompt, getUser, createUser, getAudioLen } from "./api";
-import { getUUID, getName } from "./api/localstorage";
+import Recorder from './components/Recorder';
+import PhraseBox from './components/PhraseBox';
+import Metrics from './components/Metrics';
+import Wave from './components/Wave';
+
+import { postAudio, getPrompt, getUser, createUser, getAudioLen } from './api';
 
 class Record extends Component {
   constructor(props) {
@@ -20,42 +20,43 @@ class Record extends Component {
       blob: undefined,
       play: false,
       prompt: '',
-      language: "",
+      language: '',
       promptNum: 0,
       totalTime: 0,
       totalCharLen: 0,
       audioLen: 0,
-      showPopup: false,
       isRecording: false,
       needsConfirmation: false,
       replaceRecording: false,
       autoReview: true,
-      supportedBrowser: false
+      supportedBrowser: false,
+      hasError: false
     };
 
-    this.uuid = getUUID();
-    this.name = getName();
+    this.name = 'Mimic My Voice';
   }
 
   componentDidMount() {
-    document.addEventListener("keydown", this.handleKeyDown, false);
-    this.requestUserDetails(this.uuid);
+    document.addEventListener('keydown', this.handleKeyDown, false);
+    this.requestUserDetails();
 
     // Check for Supported Browser
     if (!navigator.getUserMedia || !window.MediaRecorder) {
       this.setState({
+        hasError: true,
         prompt: 'Your browser doesn\'t support native microphone recording. For best results, we recommend using Google Chrome or Mozilla Firefox.',
         totalPrompt: 0
       })
     } else {
       this.setState({
+        hasError: false,
         supportedBrowser: true
       })
     }
   }
 
   componentWillUnmount() {
-    document.removeEventListener("keydown", this.handleKeyDown, false);
+    document.removeEventListener('keydown', this.handleKeyDown, false);
   }
 
   render() {
@@ -70,12 +71,6 @@ class Record extends Component {
         }`}>
         <div id="recorder">
           <h1 className="sr-only">Mimic Recording Studio</h1>
-          <TopContainer
-            userName={this.name}
-            route={this.props.history.push}
-            show={this.state.showPopup}
-            dismiss={this.dismissPopup}
-          />
           <Metrics
             totalTime={this.state.totalTime}
             totalCharLen={this.state.totalCharLen}
@@ -88,12 +83,13 @@ class Record extends Component {
             audioLen={this.state.audioLen}
             totalCharLen={this.state.totalCharLen}
             totalTime={this.state.totalTime}
+            hasError={this.state.hasError}
           />
           <div className="wave-container" id="container">
             {this.state.displayWav ? this.renderWave() : this.renderVisualizer()}
             <Recorder
-              command={this.state.shouldRecord ? "start" : "stop"}
-              onStart={() => this.shoulddisplayWav(false)}
+              command={this.state.shouldRecord ? 'start' : 'stop'}
+              onStart={() => this.shouldDisplayWav(false)}
               onStop={this.processBlob}
               onMissingAPIs={this.checkSupport}
               gotStream={this.silenceDetection}
@@ -113,7 +109,7 @@ class Record extends Component {
           </div>
           <div id="controls">
             <button id="btn_Record"
-              disabled={!this.state.supportedBrowser}
+              disabled={!this.state.supportedBrowser || this.state.hasError}
               title={
                 !this.state.isRecording
                   ? this.state.needsConfirmation
@@ -149,14 +145,14 @@ class Record extends Component {
             <button
               id="btn_Play"
               title="Listen to Recording"
-              disabled={this.state.shouldRecord || this.state.blob === undefined || this.state.play}
+              disabled={this.state.shouldRecord || this.state.blob === undefined || this.state.play || this.state.hasError}
               className={`btn btn-play ${
                 this.state.shouldRecord
-                  ? "btn-disabled"
+                  ? 'btn-disabled'
                   : this.state.blob === undefined
-                  ? "btn-disabled"
+                  ? 'btn-disabled'
                   : this.state.play
-                  ? "btn-disabled"
+                  ? 'btn-disabled'
                   : ''
               } `}
               onClick={this.state.shouldRecord ? () => null : this.state.play ? () => null : this.playWav}
@@ -167,14 +163,14 @@ class Record extends Component {
             <button
               id="btn_Next"
               title="Save Recording and Continue"
-              disabled={this.state.shouldRecord || this.state.blob === undefined || this.state.play}
+              disabled={this.state.shouldRecord || this.state.blob === undefined || this.state.play || this.state.hasError}
               className={`btn btn-next ${
                 this.state.shouldRecord
-                  ? "btn-disabled"
+                  ? 'btn-disabled'
                   : this.state.blob === undefined
-                  ? "btn-disabled"
+                  ? 'btn-disabled'
                   : this.state.play
-                  ? "btn-disabled"
+                  ? 'btn-disabled'
                   : ''
               }`}
               onClick={this.state.shouldRecord ? () => null : this.state.play ? () => null : this.onNext}
@@ -188,7 +184,7 @@ class Record extends Component {
               type="checkbox"
               id="auto-review-input"
               title="Automatically Play Recordings when Complete?"
-              disabled={!this.state.supportedBrowser}
+              disabled={!this.state.supportedBrowser || this.state.hasError}
               checked={this.state.autoReview}
               onChange={this.handleAutoReview}
             /> &nbsp;
@@ -201,55 +197,56 @@ class Record extends Component {
     );
   }
 
-  dismissPopup = () => {
-    this.setState({
-      showPopup: false
-    });
-  };
-
-  requestPrompts = uuid => {
-    getPrompt(uuid)
+  requestPrompts = () => {
+    getPrompt()
       .then(res => res.json())
       .then(res => {
         if (res.success) {
           this.setState({
+            hasError: false,
             prompt: res.data.prompt,
             totalPrompt: res.data.total_prompt
           });
         }
-      });
+      }).catch(err => this.showError(err));
   };
 
-  requestUserDetails = uuid => {
-    getUser(uuid)
+  showError = err => {
+    console.error(err);
+    this.setState({
+      hasError: true,
+      prompt: 'Failed to Connect.  Try Restarting Mimic Recording Studio.',
+      totalPrompt: 0
+    });
+  }
+
+  requestUserDetails = () => {
+    getUser()
       .then(res => res.json())
       .then(res => {
         if (res.success) {
           this.setState({
+            hasError: false,
             userName: res.data.user_name,
             language: res.data.language,
             promptNum: res.data.prompt_num,
             totalTime: res.data.total_time_spoken,
             totalCharLen: res.data.len_char_spoken
           });
-          this.requestPrompts(this.uuid);
+          this.requestPrompts();
         } else {
-          if (this.uuid) {
-            createUser(this.uuid, this.name)
-              .then(res => res.json())
-              .then(res => {
-                if (res.success) {
-                  this.setState({ userCreated: true });
-                  this.requestPrompts(this.uuid);
-                } else {
-                  window.location = '/';
-                }
-              });
-          } else {
-            window.location = '/';
-          }
+          createUser()
+            .then(res => res.json())
+            .then(res => {
+              if (res.success) {
+                this.setState({ hasError: false, userCreated: true });
+                this.requestPrompts();
+              } else {
+                window.location = '/';
+              }
+            }).catch(err => this.showError(err));
         }
-      });
+      }).catch(err => this.showError(err));
   };
 
   renderWave = () => (
@@ -285,17 +282,17 @@ class Record extends Component {
   };
 
   processBlob = blob => {
-    getAudioLen(this.uuid, blob)
+    getAudioLen(blob)
       .then(res => res.json())
       .then(res =>
         this.setState({
           audioLen: res.data.audio_len
         })
-      );
+      ).catch(err => this.showError(err));
     this.setState({
       blob: blob
     });
-    this.shoulddisplayWav(true);
+    this.shouldDisplayWav(true);
 
     if (this.state.autoReview) {
       clearTimeout(window.autoPlay);
@@ -304,7 +301,7 @@ class Record extends Component {
     }
   };
 
-  shoulddisplayWav = bool => this.setState({ displayWav: bool });
+  shouldDisplayWav = bool => this.setState({ displayWav: bool });
 
   playWav = () => this.setState({ play: true });
 
@@ -382,13 +379,13 @@ class Record extends Component {
 
   onNext = () => {
     if (this.state.blob !== undefined) {
-      postAudio(this.state.blob, this.state.prompt, this.uuid)
+      postAudio(this.state.blob, this.state.prompt)
         .then(res => res.json())
         .then(res => {
           if (res.success) {
             this.setState({ displayWav: false });
-            this.requestPrompts(this.uuid);
-            this.requestUserDetails(this.uuid);
+            this.requestPrompts();
+            this.requestUserDetails();
             this.setState({
               blob: undefined,
               audioLen: 0
@@ -408,7 +405,7 @@ class Record extends Component {
               replaceRecording: false
             });
           } else {
-            alert("There was an error in saving that audio");
+            alert('There was an error in saving that audio');
           }
         })
         .catch(err => console.log(err));
@@ -417,12 +414,12 @@ class Record extends Component {
 
   silenceDetection = stream => {
     const options = {
-      interval: "150",
+      interval: '150',
       threshold: -80
     };
     const speechEvents = hark(stream, options);
 
-    speechEvents.on("stopped_speaking", () => {
+    speechEvents.on('stopped_speaking', () => {
       this.stopRecording();
     });
   };
@@ -432,52 +429,6 @@ class Record extends Component {
       autoReview: event.target.checked
     });
   }
-}
-
-class TopContainer extends Component {
-  render() {
-    return this.props.show ? this.renderContainer() : null;
-  }
-
-  renderContainer = () => {
-    return (
-      <div className="top-container">
-        <div className="top-container-info">
-          <div className="session-info">
-            <div className="top-info">
-              <div>
-                <h2>RECORDER</h2>
-                &nbsp;
-                <span id="sessionName">{this.props.userName}</span>
-              </div>
-              <div className="btn-restart" />
-            </div>
-            <hr />
-            <p>
-              It is very important that the recorded words{" "}
-              <span className="highlight">
-                match the text in the script exactly
-              </span>
-              . If you accidentally deviate from the script or are unsure,
-              please record the prompt again.
-            </p>
-            <p>
-              <button className="btn info-btn" onClick={this.handleClick}>
-                Tutorial
-              </button>
-              <button className="btn info-btn" onClick={this.props.dismiss}>
-                Continue
-              </button>
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  handleClick = () => {
-    this.props.route("/tutorial");
-  };
 }
 
 export default Record;

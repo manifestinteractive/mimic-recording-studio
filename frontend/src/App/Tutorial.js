@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import PhraseBox from "./components/PhraseBox";
-import { ReactMic as Visualizer } from "react-mic";
+import React, { Component } from 'react';
+import PhraseBox from './components/PhraseBox';
+import { ReactMic as Visualizer } from 'react-mic';
 
 class Tutorial extends Component {
   render() {
@@ -71,8 +71,8 @@ class Tutorial extends Component {
               </div>
           </div>
           <div>
-              <button className="btn" onClick={this.handleClick}>
-                Let's Go
+              <button className="btn" onClick={this.startRecording}>
+                Start Recording
                 <i className="fas ibutton-continue fa-arrow-right" />
               </button>
           </div>
@@ -82,8 +82,8 @@ class Tutorial extends Component {
     );
   }
 
-  handleClick = () => {
-      this.props.history.push("/record")
+  startRecording = () => {
+      this.props.history.push('/record')
   }
 
 }

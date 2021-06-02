@@ -446,6 +446,10 @@ input::placeholder {
   font-weight: 300;
 }
 
+#phrase.error {
+  color: #e05da0;
+}
+
 .feedback-ball-red {
   background-color: #e05da0;
   padding: 0;

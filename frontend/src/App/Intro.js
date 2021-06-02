@@ -1,28 +1,11 @@
-import React, { Component } from "react";
-// import { history } from "react-router-dom";
-import { getName, saveName } from "./api/localstorage";
+import React, { Component } from 'react';
 
 class Intro extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      name: undefined
-    };
-  }
-
-  componentDidMount() {
-    const name = getName();
-    if (name) {
-      this.setState({ name });
-    }
-  }
-
   render() {
     return (
       <div className="page-intro">
         <div id="PageIntro">
-          <h2 style={{ color: "#27e4bc" }}>Mimic Recording Studio</h2>
+          <h2 style={{ color: '#27e4bc' }}>Mimic Recording Studio</h2>
           <h1>Create a Custom Text to Speech Voice</h1>
           <p>
             <a href="https://mycroft.ai/" target="_blank" rel="noopener noreferrer">Mycroft's</a> open source Mimic technologies are Text-to-Speech engines,
@@ -84,14 +67,9 @@ class Intro extends Component {
               </li>
             </ul>
           </div>
-          {getName() ? this.renderWelcomeBackMsg() : this.renderInput()}
           <div className="btn_PageIntro">
-            <button
-              id="btn_PageIntro"
-              className="btn"
-              onClick={this.handleTrainMimicBtn}
-            >
-              {getName() ? "Let's Go" : "Next"}
+            <button id="btn_PageIntro" className="btn" onClick={this.startRecording}>
+              Start Recording
               <i className="fas ibutton-continue fa-arrow-right" />
             </button>
           </div>
@@ -100,40 +78,8 @@ class Intro extends Component {
     );
   }
 
-  renderInput = () => {
-    return (
-      <div>
-        <p>To get started, enter your name and hit the Next button.</p>
-        <input
-          type="text"
-          id="yourname"
-          placeholder="Your Name"
-          onChange={this.handleInput}
-        />
-      </div>
-    );
-  };
-
-  renderWelcomeBackMsg = () => {
-    return (
-      <div>
-        <p>Welcome back <strong>{this.state.name}</strong> !</p>
-        <p>Ready to Continue Recording?</p>
-      </div>
-    );
-  };
-
-  handleInput = e => {
-    this.setState({ name: e.target.value });
-  };
-
-  handleTrainMimicBtn = () => {
-    if (this.state.name === undefined) {
-      alert("Please input a name before proceeding!");
-    } else {
-	    saveName(this.state.name);
-	    this.props.history.push('/record')
-    }
+  startRecording = () => {
+    this.props.history.push('/record')
   };
 }
 

@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class PhraseBox extends Component {
   render() {
     return (
       <div id="phraseBox">
-        <div id="phrase">
+        <div id="phrase" className={this.props.hasError ? 'error' : ''}>
           {this.renderFeedback()}
           {this.props.prompt}
         </div>
@@ -15,7 +15,7 @@ class PhraseBox extends Component {
 
   renderFeedback = () => {
     if (this.props.promptNum < 20 || this.props.audioLen === 0) {
-      return "";
+      return '';
     } else {
       const speechRate = this.props.prompt.length / this.props.audioLen;
       const avgSpeechRate = (
@@ -58,7 +58,8 @@ PhraseBox.propTypes = {
   promptNum: PropTypes.number,
   audioLen: PropTypes.number,
   totalCharLen: PropTypes.number,
-  totalTime: PropTypes.number
+  totalTime: PropTypes.number,
+  hasError: PropTypes.bool
 };
 
 export default PhraseBox;

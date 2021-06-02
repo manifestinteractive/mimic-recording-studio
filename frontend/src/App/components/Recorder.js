@@ -1,5 +1,5 @@
 /*
-This code was modified to work with the lastest React Version.
+This code was modified to work with the latest React Version.
 Original code can be found here
 https://github.com/agrasley/react-recorder/blob/master/src/Recorder.js
 
