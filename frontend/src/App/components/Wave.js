@@ -4,11 +4,12 @@ import PropTypes from 'prop-types';
 
 class Wave extends Component {
     componentDidMount() {
-        document.addEventListener('keydown', this.handleKeyDown, false);
-
         const { progressColor, waveColor, blob } = this.props;
         this.waveSurfer = WaveSurfer.create({
             container: '#waveform',
+            cursorColor: '#88dcfe',
+            cursorWidth: 1,
+            interact: false,
             waveColor: waveColor ? waveColor : 'rgba(255, 255, 255, 0.15)',
             progressColor: progressColor ? progressColor : '#88dcfe'
         });
@@ -25,15 +26,10 @@ class Wave extends Component {
 
     componentDidUpdate() {
         if (this.props.play) {
+            this.waveSurfer.seekTo(0);
             this.waveSurfer.play();
         } else {
             this.waveSurfer.pause();
-        }
-    }
-
-    handleKeyDown = (event) => {
-        if (event.keyCode === 27) {
-            this.waveSurfer.pause()
         }
     }
 

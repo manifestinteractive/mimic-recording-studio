@@ -8,39 +8,13 @@
 html {
   box-sizing: border-box;
 }
+
 *, *:before, *:after {
   box-sizing: inherit;
 }
 
 html, body, #root, .App {
   height: 100vh;
-}
-
-#root {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.page {
-  padding: 0 20px;
-}
-
-input, button, a {
-  outline-offset: 4px;
-}
-
-button {
-  border: none;
-  appearance: none;
-  margin: 0;
-  padding: 0;
-  position: relative;
-  height: 50px;
-  line-height: 50px;
-}
-
-.page {
-  margin-top: 20px;
 }
 
 body {
@@ -53,8 +27,8 @@ body {
   font-weight: 300;
 }
 
-a {
-  text-decoration: none;
+input, button, a {
+  outline-offset: 4px;
 }
 
 h1 {
@@ -71,8 +45,8 @@ h2 {
   color: #88dcfe;
   padding: 2px 0px 10px 0px;
   font-size: 1em;
-  font-variant: small-caps;
   font-weight: 300;
+  text-transform: uppercase;
 }
 
 p {
@@ -86,10 +60,35 @@ i {
 	font-size: 2.1em;
 }
 
+button {
+  border: none;
+  appearance: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  height: 50px;
+  line-height: 50px;
+}
+
+a {
+  text-decoration: none;
+}
+
 hr {
   margin: 1em 0 1em 0;
   border-top: 1px solid #f1f3f4;
 }
+
+#root {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page {
+  padding: 0 20px;
+  margin-top: 20px;
+}
+
 .page-intro {
   margin-bottom: 20px;
 }
@@ -117,88 +116,15 @@ hr {
   margin-right: 10px;
 }
 
-.top-container {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  position: absolute;
-  top: 64px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 100px 150px 100px 150px;
-  background-color: rgba(0, 0, 0, 0.80);
-  z-index: 100;
-  align-items: center;
-  backdrop-filter: blur(2px);
-}
-
-.top-container-info {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  padding: 50px;
-  border-radius: 15px;
-  background: #1b1e28;
-  max-width: 500px;
-  align-items: center;
-}
-
-.info-btn {
-  height: 50px;
-  margin-right: 10px;
-}
-
-.key-icon {
-  height: 20px;
-  position: relative;
-  bottom: -5px;
-}
-
 .instructions {
   margin: 20px 0px 40px 0px;
   padding: 40px 50px 40px 50px;
-  background-color: rgba(0,0,0,0.25);
+  background-color: #14161e;
   border-radius: 6px;
-}
-
-.instructions2 {
-  margin: 0px 30px 40px 0px;
-  padding: 40px 50px 40px 50px;
-  background-color: #f1f3f4;
-  border-radius: 6px;
-  flex: 1;
-}
-
-.session-info {
-  margin: 0;
-  padding: 0;
-  border-radius: 6px;
-  border: none;
-  flex: 1 1;
-}
-
-.top-info {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
-
-.btn-restart {
-  display: inline;
-  margin: 0.8em 0 0 0;
-}
-
-.small-caps {
-  font-variant: small-caps;
 }
 
 .persona-desc li {
   margin-bottom: 16px;
-  margin-left: 20px;
-}
-
-.hints li {
   margin-left: 20px;
 }
 
@@ -217,7 +143,7 @@ hr {
 .total-hours {
   margin: 0px 30px 0px 0px;
   padding: 20px 50px 20px 50px;
-  background-color: rgba(0,0,0,0.25);
+  background-color: #14161e;
   border-radius: 6px;
   flex: 1;
   color: #90a1a9;
@@ -226,17 +152,10 @@ hr {
 .speech-rate {
   margin: 0px 0px 0px 0px;
   padding: 20px 50px 20px 50px;
-  background-color: rgba(0,0,0,0.25);
+  background-color: #14161e;
   border-radius: 6px;
   flex: 1;
   color: #90a1a9;
-}
-
-/* start da css for da buttons */
-
-.btn_PageIntro {
-	max-width: 150px;
-  padding-bottom: 4rem;
 }
 
 .btn {
@@ -246,7 +165,6 @@ hr {
   color: #1b1e28;
   font-weight: 400;
 	background-color: #88dcfe;
-	max-width: 175px;
   text-align: center;
   white-space: nowrap;
   text-transform: uppercase;
@@ -254,36 +172,12 @@ hr {
   cursor: pointer;
   display: inline-block;
   transition: background-color 0.25s;
-}
-
-.btn-next {
-  border-radius: 4px;
-  padding: 0 1.75em;
-  font-size: 1em;
-  color: #1b1e28;
-  font-weight: 400;
-  background-color: #27e4bc;
-  text-align: center;
-  cursor: pointer;
-  margin-right: 10px;
-  cursor: pointer;
-  width: 140px;
-  display: inline-block;
-  text-align: center;
-  text-transform: uppercase;
+  font-weight: 600;
+  min-width: 185px;
 }
 
 .btn-play, .btn-record, .btn-stop {
   margin-right: 10px;
-  cursor: pointer;
-  width: 140px;
-  display: inline-block;
-  text-align: center;
-  text-transform: uppercase;
-}
-
-.btn-record {
-  width: 175px;
 }
 
 .btn-record.stop {
@@ -314,115 +208,12 @@ hr {
   pointer-events: none;
 }
 
-.btn:hover {
-background-color: #F4F4F4;
-}
-
-.btn:active {
-background-color: #F4F4F4;
-}
-
-.btn-next:hover {
-background-color: #F4F4F4;
-}
-
-.btn-next:active {
-background-color: #F4F4F4;
+.btn:hover, .btn:active {
+  background-color: #F4F4F4;
 }
 
 .btn-next.btn-disabled .ibutton-next {
   color: #1b1e28;
-}
-
-.blue {
-  background-color: #55acee;
-  box-shadow: 0px 5px 0px 0px #3c93d5;
-}
-
-.blue:hover {
-  background-color: #6fc6ff;
-}
-
-.green {
-  background-color: #2ecc71;
-  box-shadow: 0px 5px 0px 0px #15b358;
-}
-
-.green:hover {
-  background-color: #48e68b;
-}
-
-.red {
-  background-color: #e74c3c;
-  box-shadow: 0px 5px 0px 0px #ce3323;
-}
-
-.red:hover {
-  background-color: #ff6656;
-}
-
-.purple {
-  background-color: #9b59b6;
-  box-shadow: 0px 5px 0px 0px #82409d;
-}
-
-.purple:hover {
-  background-color: #b573d0;
-}
-
-.orange {
-  background-color: #e67e22;
-  box-shadow: 0px 5px 0px 0px #cd6509;
-}
-
-.orange:hover {
-  background-color: #ff983c;
-}
-
-.yellow {
-  background-color: #f1c40f;
-  box-shadow: 0px 5px 0px 0px #d8ab00;
-}
-
-.yellow:hover {
-  background-color: #ffde29;
-}
-
-.highlight {
-  color: #22a7f0;
-}
-
-/* For buttons */
-
-.disabled {
-  background-color: red;
-  pointer-events: none;
-}
-
-#yourname {
-  font-size: 1em;
-  padding: 16px;
-  width: 320px;
-  border: 0px;
-  border-radius: 4px;
-  background-color: #f1f3f4;
-	margin-bottom: 16px;
-	color: #1b1e28;
-}
-
-input::placeholder {
-  color: #6C7A89;
-  font-size: 1em;
-}
-
-#phraseXofY {
-  color: maroon;
-  font-size: 1.5em;
-  margin-right: 50px;
-}
-
-#newSession {
-  display: block;
 }
 
 #phraseBox {
@@ -433,11 +224,13 @@ input::placeholder {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: rgba(0, 0, 0, 0.25);
+  border-radius: 6px 6px 0 0;
+  margin-top: 18px;
 }
 
 #phrase {
-  background-color: #1b1e28;
-  color: #88dcfe;
+  color: #FFF;
   font-size: 2.6em;
   padding: 0 100px;
   border-top-left-radius: 6px;
@@ -516,13 +309,6 @@ input::placeholder {
   text-align: center;
 }
 
-#instructions {
-  color: gray;
-  font-size: 0.75em;
-  float: right;
-  width: 20vw;
-}
-
 .grid-layout {
   display: grid;
   grid-template-columns: auto auto auto;
@@ -531,24 +317,18 @@ input::placeholder {
   margin: 0 0 2em 0;
 }
 
-/* Holds recording widgets */
-
-#container {
-  width: 100%;
-}
-
 .wave-container {
   background-color: #1b1e28;
   width: 100%;
 }
 
 #PageRecord .wavedisplay {
-  opacity: 0;
+  opacity: 0.1;
   transition: opacity 0.25s;
 }
 
 #PageRecord.is-new .wavedisplay {
-  opacity: 0;
+  opacity: 0.1;
 }
 #PageRecord.is-recording .wavedisplay {
   opacity: 1;
@@ -559,57 +339,31 @@ input::placeholder {
 #PageRecord.needs-confirmation .wavedisplay {
   opacity: 1;
 }
+#container {
+  background-color: #14161e;
+  border-radius: 0 0 6px 6px;
+}
 
-#analyser,
-#wavedisplay {
+#analyser, #wavedisplay {
   width: 100%;
   height: 100px;
   margin-bottom: 1.75em;
-  margin-top: -30px;
 }
 
 .wavedisplay {
   width: 100%;
   height: 128px;
-  margin-top: -32px;
 }
-
-#waveform.wavedisplay {
-  margin-bottom: 12px;
-}
-
-/* Meter/Waveform widgets */
 
 canvas {
   display: inline-block;
-  background: #1b1e28;
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
+  background: transparent;
 }
 
 #controls {
   text-align: center;
   padding-bottom: 27px;
   margin-top: 28px;
-}
-
-
-.recordBox {
-  margin-bottom: 20px;
-}
-
-#record {
-  height: 70px;
-  padding: 0;
-  margin-bottom: -28px;
-  margin-right: 10px;
-  margin-left: 7px;
-  box-sizing: border-box;
-}
-
-#record:hover {
-  cursor: pointer;
-  cursor: hand;
 }
 
 .ibutton {
@@ -698,6 +452,63 @@ a.get-help:hover, a.get-help:focus, a.get-help:active {
 
 #footer {
   height: 175px;
+}
+
+.spoken-words {
+  text-align: center;
+  min-height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+}
+.spoken-words span {
+  color: #90a1a9;
+}
+
+.spoken-words .diff {
+  padding: 0 40px;
+}
+.spoken-words.unsupported {
+  display: none;
+}
+
+#PageRecord.has-recorded .spoken-words span.correct {
+  color: #27e4bc;
+}
+
+#PageRecord.has-recorded .spoken-words  span.incorrect {
+  color: #e05da0;
+  text-decoration: line-through;
+  cursor: help;
+}
+
+.spoken-words span:first-of-type {
+  margin-left: 10px;
+}
+
+.spoken-words i.fas {
+  font-size: 1.2rem;
+  color: white;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.spoken-words i.fas.good {
+  color: #27e4bc;
+}
+
+.spoken-words i.fas.bad {
+  color: #e05da0;
+}
+
+#PageRecord.is-new .spoken-words i.fas {
+  opacity: 0;
+}
+#PageRecord.is-recording .spoken-words i.fas,
+#PageRecord.has-recorded .spoken-words i.fas,
+#PageRecord.needs-confirmation .spoken-words i.fas {
+  opacity: 1;
 }
 
 @media only screen and (min-width: 1200px) {

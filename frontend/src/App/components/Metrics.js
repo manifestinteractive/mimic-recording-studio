@@ -3,26 +3,45 @@ import PropTypes from 'prop-types';
 
 class Metrics extends Component {
     render() {
-        let charPerSec = (this.props.totalCharLen / this.props.totalTime).toFixed(1);
-        charPerSec = isNaN(charPerSec) ? 0 : charPerSec;
         return (
             <div className="metrics-container">
                 <div className="total-hours">
                     <h2>PROGRESS</h2>
                     <div>
-                        Phrase: {this.props.promptNum} / {this.props.totalPrompt}
+                      {this.phraseCalc()}
                     </div>
                     <div>
-                        Time Recorded: {this.secondsToHms(Math.round(this.props.totalTime))}
+                        {this.timeRecorded()}
                     </div>
                 </div>
                 <div className="speech-rate">
                     <h2>SPEECH RATE</h2>
-                    <div>Average: {charPerSec} characters per second</div>
+                    <div>{this.speechRate()}</div>
                 </div>
             </div>
         );
     }
+
+    phraseCalc = () => {
+      if (this.props && typeof this.props.totalPrompt !== 'undefined') {
+        return `Phrase: ${this.props.promptNum} / ${this.props.totalPrompt} ( ${Math.round((this.props.promptNum / this.props.totalPrompt) * 100)}% )`;
+      }
+    };
+
+    timeRecorded = () => {
+      if (this.props && typeof this.props.totalTime !== 'undefined') {
+        return `Time Recorded: ${this.secondsToHms(Math.round(this.props.totalTime))}`;
+      }
+    };
+
+    speechRate = () => {
+      if (this.props && typeof this.props.totalTime !== 'undefined' && typeof this.props.totalCharLen !== 'undefined') {
+        let charPerSec = (this.props.totalCharLen / this.props.totalTime).toFixed(1);
+        charPerSec = isNaN(charPerSec) ? 0 : charPerSec;
+
+        return `Average: ${charPerSec} characters per second`;
+      }
+    };
 
     secondsToHms = d => {
         d = Number(d);
