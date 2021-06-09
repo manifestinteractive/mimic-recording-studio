@@ -227,6 +227,7 @@ hr {
   background-color: rgba(0, 0, 0, 0.25);
   border-radius: 6px 6px 0 0;
   margin-top: 18px;
+  position: relative;
 }
 
 #phrase {
@@ -248,8 +249,8 @@ hr {
   padding: 0;
   height: 30px;
   border-radius: 5px;
-  position: fixed;
-  bottom: 20px;
+  position: absolute;
+  bottom: -130px;
   font-size: 1rem;
   color: #1c1e29;
   text-transform: uppercase;
@@ -259,6 +260,7 @@ hr {
   width: 120px;
   white-space: nowrap;
   text-align: center;
+  z-index: 1000;
 }
 
 .feedback-ball-green {
@@ -266,8 +268,8 @@ hr {
   padding: 0;
   height: 30px;
   border-radius: 5px;
-  position: fixed;
-  bottom: 20px;
+  position: absolute;
+  bottom: -130px;
   font-size: 1rem;
   color: #1c1e29;
   text-transform: uppercase;
@@ -277,6 +279,7 @@ hr {
   width: 120px;
   white-space: nowrap;
   text-align: center;
+  z-index: 1000;
 }
 
 .feedback-ball-red-t {
@@ -509,6 +512,50 @@ a.get-help:hover, a.get-help:focus, a.get-help:active {
 #PageRecord.has-recorded .spoken-words i.fas,
 #PageRecord.needs-confirmation .spoken-words i.fas {
   opacity: 1;
+}
+
+[data-title] {
+  display: inline-block;
+  position: relative;
+}
+[data-title]:hover::before {
+  content: attr(data-title);
+  text-transform: none;
+  position: absolute;
+  top: -30px;
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 4px;
+  background: #000;
+  color: #fff;
+  font-family: sans-serif;
+  white-space: nowrap;
+  font-size: 0.8rem;
+  line-height: 1rem;
+  font-weight: 400;
+}
+[data-title]:hover::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  display: inline-block;
+  color: #fff;
+  border: 8px solid transparent;
+  border-top: 8px solid #000;
+  left: 50%;
+}
+
+[data-tooltip]:hover::before {
+  top: unset;
+  bottom: -30px;
+  left: -50%;
+}
+
+[data-tooltip]:hover::after {
+  top: unset;
+  bottom: -2px;
+  left: 0;
+  transform: rotate(180deg);
 }
 
 @media only screen and (min-width: 1200px) {

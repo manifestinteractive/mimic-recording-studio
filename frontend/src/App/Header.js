@@ -11,7 +11,7 @@ class Header extends Component {
           <img className="logo" src={logo} height="24px" alt=""/>
         </Link>
 
-        <Link to="/tutorial" title="Need Help?" className={`get-help ${window.location.pathname !== '/record' ? 'sr-only' : ''}`}>
+        <Link to="/tutorial" data-title="Need Help?" data-tooltip="bottom" className={`get-help ${window.location.pathname !== '/record' ? 'sr-only' : ''}`}>
           Help
         </Link>
       </div>

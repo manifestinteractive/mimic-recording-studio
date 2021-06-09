@@ -6,9 +6,9 @@ class PhraseBox extends Component {
     return (
       <div id="phraseBox">
         <div id="phrase" className={this.props.hasError ? 'error' : ''}>
-          {this.renderFeedback()}
           {this.props.prompt}
         </div>
+        {this.renderFeedback()}
       </div>
     );
   }

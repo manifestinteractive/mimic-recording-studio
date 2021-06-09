@@ -14,22 +14,29 @@ class Wave extends Component {
             progressColor: progressColor ? progressColor : '#88dcfe'
         });
 
+        this.timeout = null;
+
         if (blob) {
           this.loadWaveForm(blob);
         }
 
         this.waveSurfer.on('finish', () => {
-            this.waveSurfer.pause();
-            this.props.onFinish();
+            this.waveSurfer.stop();
+            clearTimeout(this.timeout);
+            this.timeout = setTimeout(() => {
+              this.props.onFinish();
+            }, 500);
         });
     }
 
     componentDidUpdate() {
+      clearTimeout(this.timeout);
+
         if (this.props.play) {
             this.waveSurfer.seekTo(0);
             this.waveSurfer.play();
         } else {
-            this.waveSurfer.pause();
+            this.waveSurfer.stop();
         }
     }
 

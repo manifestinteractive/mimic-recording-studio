@@ -140,6 +140,7 @@ class Record extends Component {
               interimText={this.state.interimText}
               finalizedText={this.state.finalizedText}
               prompt={this.state.prompt}
+              promptNum={this.state.promptNum}
               supported={('webkitSpeechRecognition' in window)}
               isRecording={this.state.isRecording}
             />
@@ -161,7 +162,7 @@ class Record extends Component {
           <div id="controls">
             <button id="btn_Record"
               disabled={!this.state.supportedBrowser || this.state.hasError}
-              title={
+              data-title={
                 !this.state.isRecording
                   ? this.state.needsConfirmation
                     ? this.state.replaceRecording
@@ -196,7 +197,7 @@ class Record extends Component {
 
             <button
               id="btn_Play"
-              title="Listen to Recording"
+              data-title="Listen to Recording"
               disabled={this.state.shouldRecord || this.state.blob === undefined || this.state.hasError}
               className="btn btn-play"
               onClick={!this.state.play ? this.playWav : this.stopWav}
@@ -206,7 +207,7 @@ class Record extends Component {
             </button>
             <button
               id="btn_Next"
-              title="Save Recording and Continue"
+              data-title="Save Recording and Continue"
               disabled={this.state.shouldRecord || this.state.blob === undefined || this.state.play || this.state.hasError}
               className={`btn btn-next ${
                 this.state.shouldRecord
@@ -227,7 +228,7 @@ class Record extends Component {
             <input
               type="checkbox"
               id="auto-review-input"
-              title="Automatically Play Recordings when Complete?"
+              data-title="Automatically Play Recordings when Complete?"
               disabled={!this.state.supportedBrowser || this.state.hasError}
               checked={this.state.autoReview}
               onChange={this.handleAutoReview}
@@ -307,7 +308,9 @@ class Record extends Component {
     });
   };
 
-  playWav = () => this.setState({ play: true });
+  playWav = () => {
+    this.setState({ play: true });
+  }
 
   processBlob = blob => {
     getAudioLen(blob)
@@ -321,25 +324,20 @@ class Record extends Component {
           this.showError(null, 'Unable to Decode Audio. Refresh the Page to Try Again.');
         }
       }).catch(err => this.showError(err));
+
     this.setState({
       blob: blob
     });
+
     this.shouldDisplayWav(true);
 
     if (this.state.autoReview) {
-      clearTimeout(window.autoPlay);
-
-      this.setState({
-        play: false
-      });
-
-      window.autoPlay = setTimeout(this.playWav, 500);
+      this.stopWav();
+      this.playWav();
     }
   };
 
   recordHandler = () => {
-    clearTimeout(window.autoPlay);
-
     this.setState({
       isRecording: true,
       shouldRecord: true,
@@ -420,8 +418,6 @@ class Record extends Component {
   };
 
   resetRecording = () => {
-    clearTimeout(window.autoPlay);
-
     this.setState({
       shouldRecord: false,
       displayWav: false,
@@ -452,7 +448,7 @@ class Record extends Component {
 
   silenceDetection = stream => {
     const options = {
-      interval: '150',
+      interval: '100',
       threshold: -80
     };
     const speechEvents = hark(stream, options);
@@ -463,16 +459,17 @@ class Record extends Component {
   };
 
   startRecording = () => {
+    // Stop Audio Playback if Running
+    this.stopWav();
+
     // Check if we are already recording
     if (this.state.isRecording) {
       this.stopRecording();
-      return;
     }
 
     // Check if we have not started a recording already
     if (!this.state.shouldRecord && !this.state.needsConfirmation && !this.state.replaceRecording) {
       this.recordHandler();
-      return;
     }
 
     // If we have already started a recording, ask user to confirm replacing recording
@@ -481,18 +478,21 @@ class Record extends Component {
         needsConfirmation: true,
         replaceRecording: true
       });
-      return;
     }
 
     // Replace Recording
     if (!this.state.shouldRecord && this.state.needsConfirmation && this.state.replaceRecording) {
       this.resetRecording();
       this.recordHandler();
-      return;
     }
   };
 
   stopRecording = () => {
+    // If browser supports speech recognition, stop it
+    if (this.recognition) {
+      this.recognition.stop();
+    }
+
     if (this.state.needsConfirmation) {
       this.setState({
         shouldRecord: false,
@@ -509,11 +509,6 @@ class Record extends Component {
         needsConfirmation: false,
         replaceRecording: false
       });
-    }
-
-    // If browser supports speech recognition, stop it
-    if (this.recognition) {
-      this.recognition.stop();
     }
   };
 
