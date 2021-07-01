@@ -5,6 +5,7 @@ import hark from 'hark';
 import Recorder from './components/Recorder';
 import PhraseBox from './components/PhraseBox';
 import SpokenWords from './components/SpokenWords';
+import ReadPrompt from './components/ReadPrompt';
 import Metrics from './components/Metrics';
 import Wave from './components/Wave';
 
@@ -117,14 +118,20 @@ class Record extends Component {
             totalPrompt={this.state.totalPrompt}
           />
 
-          <PhraseBox
-            prompt={this.state.prompt}
-            promptNum={this.state.promptNum}
-            audioLen={this.state.audioLen}
-            totalCharLen={this.state.totalCharLen}
-            totalTime={this.state.totalTime}
-            hasError={this.state.hasError}
-          />
+          <div className="phrase-wrapper">
+            <ReadPrompt
+              prompt={this.state.prompt}
+              isRecording={this.state.isRecording}
+            />
+            <PhraseBox
+              prompt={this.state.prompt}
+              promptNum={this.state.promptNum}
+              audioLen={this.state.audioLen}
+              totalCharLen={this.state.totalCharLen}
+              totalTime={this.state.totalTime}
+              hasError={this.state.hasError}
+            />
+          </div>
 
           <div className="wave-container" id="container">
             {this.state.displayWav ? this.renderWave() : this.renderVisualizer()}

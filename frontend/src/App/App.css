@@ -216,6 +216,40 @@ hr {
   color: #1b1e28;
 }
 
+.phrase-wrapper {
+  position: relative;
+}
+
+button.read-prompt {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background-color: transparent;
+  appearance: none;
+  color: white;
+  z-index: 500;
+  cursor: pointer;
+}
+
+button.read-prompt i.fas {
+  opacity: 0.1;
+  transition: all 0.25s;
+  color: white;
+}
+
+button.read-prompt:hover i.fas, button.read-prompt:active i.fas, button.read-prompt:focus i.fas {
+  opacity: 0.5;
+}
+
+button.read-prompt.reading i.fas {
+  opacity: 1;
+  color: #88dcfe;
+}
+
+button.read-prompt.unsupported {
+  display: none;
+}
+
 #phraseBox {
   width: 100%;
   margin: 0;
