@@ -11,6 +11,7 @@ What's Different
 - [X] Refactored to work with [Mimic My Voice](https://github.com/manifestinteractive/mimic-my-voice) Automated Setup Process
 - [X] Removed UUID & Name Requirements from App.  Having different UUID's made it impossible to Backup and Restore Recordings on Different Browsers or Computers
 - [X] Added Speech to Text for Supported Browser to display what the Microphone Heard you say
+- [X] Added TTS to Read Prompt incase there are some words you are unsure how to pronounce ( it happens )
 - [X] Generates Text Diff between what was spoken and what was supposed to spoken
 - [X] Added Visual Error Handling to Recording Process
 - [X] Removed LocalStorage requirements since it was no longer needed
