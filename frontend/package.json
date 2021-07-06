@@ -14,7 +14,7 @@
     "react-recorder": "^1.0.0",
     "react-router-dom": "^4.3.1",
     "wavesurfer.js": "^2.0.6",
-    "words-to-numbers": "^1.5.1"
+    "manifestinteractive/words-to-numbers": "^1.5.1"
   },
   "scripts": {
     "start": "react-scripts start",
