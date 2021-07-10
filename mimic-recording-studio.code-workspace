@@ -1,0 +1,33 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+    "window.title": "Mimic Recording Studio${separator}${activeEditorShort}",
+		"cSpell.words": [
+			"acodec",
+			"bidirection",
+			"ffmpeg",
+			"fmax",
+			"fmin",
+			"ljspeech",
+			"mels",
+			"mycroft",
+			"nccl",
+			"noam",
+			"num",
+			"postnet",
+			"preemphasis",
+			"prenet",
+			"reinit",
+			"softmax",
+			"ssim",
+			"stopnet",
+			"tacotron",
+			"thorsten",
+			"wavs"
+		]
+	}
+}

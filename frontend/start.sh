@@ -1,2 +1,2 @@
-yarn install || npm install
-yarn start || npm start
+npm install || yarn install
+npm start || yarn start

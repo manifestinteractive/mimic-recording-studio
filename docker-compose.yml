@@ -8,12 +8,14 @@ services:
      - "${MRS_PORT_BACKEND}:${MRS_PORT_BACKEND}"
     volumes:
      - ./backend/:/src
+    env_file: .env
     environment:
     - WEBWORKERS=1
   frontend:
     container_name: mimic-my-voice-frontend
     build:
       context: ./frontend/
+    env_file: .env
     ports:
      - "${MRS_PORT_FRONTEND}:${MRS_PORT_FRONTEND}"
     volumes:
