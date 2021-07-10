@@ -3,23 +3,36 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "react-scripts": "1.1.5"
+    "react-scripts": "4.0.3"
   },
   "dependencies": {
     "hark": "^1.2.3",
-    "html-react-parser": "^1.2.6",
-    "react": "^16.5.2",
-    "react-dom": "^16.5.2",
-    "react-mic": "^12.2.2",
+    "html-react-parser": "^1.2.7",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-dotenv": "^0.1.3",
+    "react-mic": "^12.4.6",
     "react-recorder": "^1.0.0",
-    "react-router-dom": "^4.3.1",
-    "wavesurfer.js": "^2.0.6",
-    "manifestinteractive/words-to-numbers": "^1.5.1"
+    "react-router-dom": "^5.2.0",
+    "wavesurfer.js": "^5.1.0",
+    "words-to-numbers": "git://github.com/manifestinteractive/words-to-numbers.git"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "react-dotenv && react-scripts start",
+    "build": "react-dotenv && react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

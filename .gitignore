@@ -20,6 +20,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # my ignores
+env.js
 *.json
 db/
 audio_files/
