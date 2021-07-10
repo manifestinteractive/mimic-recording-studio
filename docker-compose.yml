@@ -5,18 +5,16 @@ services:
     build:
       context: ./backend/
     ports:
-     - "5000:5000"
+     - "${MRS_PORT_BACKEND}:${MRS_PORT_BACKEND}"
     volumes:
      - ./backend/:/src
     environment:
-    - CORPUS=english_corpus.csv
-    - APIPORT=5000
     - WEBWORKERS=1
   frontend:
     container_name: mimic-my-voice-frontend
     build:
       context: ./frontend/
     ports:
-     - "3000:3000"
+     - "${MRS_PORT_FRONTEND}:${MRS_PORT_FRONTEND}"
     volumes:
      - ./frontend/:/src
