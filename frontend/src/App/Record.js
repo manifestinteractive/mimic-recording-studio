@@ -11,6 +11,8 @@ import Wave from './components/Wave';
 
 import { postAudio, getPrompt, getUser, createUser, getAudioLen } from './api';
 
+const MRS_SPEECH_LANGUAGE = process.env.REACT_APP_MRS_SPEECH_LANGUAGE ? process.env.REACT_APP_MRS_SPEECH_LANGUAGE : 'en-US';
+
 class Record extends Component {
   constructor(props) {
     super(props);
@@ -44,7 +46,7 @@ class Record extends Component {
 
        // Set interim results to be returned if a callback for it has been passed in
       this.recognition.interimResults = this.onRecognition;
-      this.recognition.lang = process.env.MRS_SPEECH_LANGUAGE ? process.env.MRS_SPEECH_LANGUAGE : 'en-US';
+      this.recognition.lang = MRS_SPEECH_LANGUAGE;
 
       let finalTranscript = '';
 

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+const MRS_PROMPT_VOICE = process.env.REACT_APP_MRS_PROMPT_VOICE ? process.env.REACT_APP_MRS_PROMPT_VOICE : 'Google US English';
+const MRS_PROMPT_SPEED = process.env.REACT_APP_MRS_PROMPT_SPEED ? process.env.REACT_APP_MRS_PROMPT_SPEED : 0.9;
+
 class ReadPrompt extends Component {
   constructor(props) {
     super(props);
@@ -17,7 +20,7 @@ class ReadPrompt extends Component {
     this.utterance = null;
 
     const voices = this.synth.getVoices();
-    const selectedVoice = process.env.MRS_PROMPT_VOICE ? process.env.MRS_PROMPT_VOICE : 'Google US English';
+    const selectedVoice = MRS_PROMPT_VOICE;
 
     for (let i = 0; i < voices.length ; i++) {
       if (voices[i].name === selectedVoice) {
@@ -28,14 +31,17 @@ class ReadPrompt extends Component {
   }
   componentDidUpdate () {
     this.utterance = new SpeechSynthesisUtterance(this.props.prompt);
-    this.utterance.voice = this.voice
-    this.utterance.rate = process.env.MRS_PROMPT_SPEED ? process.env.MRS_PROMPT_SPEED : 0.9
+    this.utterance.voice = this.voice;
+    this.utterance.rate = MRS_PROMPT_SPEED;
 	}
 
   render() {
     const readPromp = () => {
+      console.log('readPromp');
       if (this.supported) {
+        console.log('readPromp', 'Supported');
         if (!this.state.reading) {
+          console.log('readPromp', 'Start Reading', this.props.prompt);
           this.setState({
             reading: true
           })
