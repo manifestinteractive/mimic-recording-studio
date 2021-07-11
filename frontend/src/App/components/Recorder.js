@@ -65,7 +65,6 @@ class Recorder extends React.Component {
 			};
 
 			const onSuccess = stream => {
-
 				this.mediaRecorder = new window.MediaRecorder(stream, mediaOpts || {});
 
 				this.mediaRecorder.ondataavailable = e => {
@@ -79,6 +78,7 @@ class Recorder extends React.Component {
 				};
 
 				this.mediaRecorder.onerror = onErr;
+
 				if (onPause) this.mediaRecorder.onpause = onPause;
 				if (onResume) this.mediaRecorder.onresume = onResume;
 				if (onStart) this.mediaRecorder.onstart = onStart;

@@ -1,80 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import parse from 'html-react-parser';
-
-// TODO: Stop relying on this, it sucks
 import wordsToNumbers from 'words-to-numbers';
-
-const numberWords = [
-  'billion',
-  'decillion',
-  'eight',
-  'eighteen',
-  'eighteenth',
-  'eighth',
-  'eightieth',
-  'eighty',
-  'eleven',
-  'eleventh',
-  'fifteen',
-  'fifteenth',
-  'fifth',
-  'fiftieth',
-  'fifty',
-  'first',
-  'five',
-  'fortieth',
-  'forty',
-  'four',
-  'fourteen',
-  'fourteenth',
-  'fourth',
-  'hundred',
-  'hundredth',
-  'million',
-  'nine',
-  'nineteen',
-  'nineteenth',
-  'ninetieth',
-  'ninety',
-  'ninth',
-  'nonillion',
-  'octillion',
-  'one',
-  'quadrillion',
-  'quintillion',
-  'second',
-  'septillion',
-  'seven',
-  'seventeen',
-  'seventeenth',
-  'seventh',
-  'seventieth',
-  'seventy',
-  'sextillion',
-  'six',
-  'sixteen',
-  'sixteenth',
-  'sixth',
-  'sixtieth',
-  'sixty',
-  'ten',
-  'tenth',
-  'third',
-  'thirteen',
-  'thirteenth',
-  'thirtieth',
-  'thirty',
-  'thousand',
-  'three',
-  'trillion',
-  'twelfth',
-  'twelve',
-  'twentieth',
-  'twenty',
-  'two',
-  'zero'
-];
 
 class SpokenWords extends Component {
   componentDidMount() {
@@ -83,18 +10,7 @@ class SpokenWords extends Component {
   }
   componentDidUpdate(prevProps) {
     if (this.props.prompt && this.props.prompt.length > 0) {
-      const words = this.props.prompt.split(' ');
-
-      words.forEach((word, index) => {
-        if (numberWords.indexOf(word) > -1) {
-          this.hasWrittenWords = true;
-          return
-        }
-      })
-    }
-
-    // Fix issues with numbers being written as words
-    if (this.hasWrittenWords) {
+      // Fix issues with numbers being written as words
       var currentPrompt = this.props.prompt;
       var numberPromptFix = wordsToNumbers(currentPrompt, {
         impliedHundreds: true
@@ -105,8 +21,6 @@ class SpokenWords extends Component {
       }
 
       this.cleanPrompt = currentPrompt;
-    } else {
-      this.cleanPrompt = this.props.prompt;
     }
   }
 
