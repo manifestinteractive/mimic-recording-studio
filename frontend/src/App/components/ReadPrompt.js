@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import env from 'react-dotenv';
 
 class ReadPrompt extends Component {
   constructor(props) {
@@ -18,7 +17,7 @@ class ReadPrompt extends Component {
     this.utterance = null;
 
     const voices = this.synth.getVoices();
-    const selectedVoice = env.MRS_PROMPT_VOICE ? env.MRS_PROMPT_VOICE : 'Google US English';
+    const selectedVoice = process.env.MRS_PROMPT_VOICE ? process.env.MRS_PROMPT_VOICE : 'Google US English';
 
     for (let i = 0; i < voices.length ; i++) {
       if (voices[i].name === selectedVoice) {
@@ -30,7 +29,7 @@ class ReadPrompt extends Component {
   componentDidUpdate () {
     this.utterance = new SpeechSynthesisUtterance(this.props.prompt);
     this.utterance.voice = this.voice
-    this.utterance.rate = env.MRS_PROMPT_SPEED ? env.MRS_PROMPT_SPEED : 0.9
+    this.utterance.rate = process.env.MRS_PROMPT_SPEED ? process.env.MRS_PROMPT_SPEED : 0.9
 	}
 
   render() {

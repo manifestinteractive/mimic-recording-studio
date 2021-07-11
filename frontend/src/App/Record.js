@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { ReactMic as Visualizer } from 'react-mic';
 import hark from 'hark';
-import env from 'react-dotenv';
 
 import Recorder from './components/Recorder';
 import PhraseBox from './components/PhraseBox';
@@ -45,7 +44,7 @@ class Record extends Component {
 
        // Set interim results to be returned if a callback for it has been passed in
       this.recognition.interimResults = this.onRecognition;
-      this.recognition.lang = env.MRS_SPEECH_LANGUAGE ? env.MRS_SPEECH_LANGUAGE : 'en-US';
+      this.recognition.lang = process.env.MRS_SPEECH_LANGUAGE ? process.env.MRS_SPEECH_LANGUAGE : 'en-US';
 
       let finalTranscript = '';
 
